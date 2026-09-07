@@ -711,7 +711,7 @@ workflow:
           max_write_timeout: 0
         title: 主管飞书预警
         type: http-request
-        url: https://open.feishu.cn/open-apis/bot/v2/hook/fe9081a1-833b-4c6e-8966-0dd80f5d9b11
+        url: https://open.feishu.cn/open-apis/bot/v2/hook/YOUR_FEISHU_BOT_WEBHOOK_HERE
         variables: []
       height: 169
       id: h0
@@ -1266,7 +1266,7 @@ workflow:
           max_write_timeout: 0
         title: 发送工单通知
         type: http-request
-        url: https://open.feishu.cn/open-apis/bot/v2/hook/fe9081a1-833b-4c6e-8966-0dd80f5d9b11
+        url: https://open.feishu.cn/open-apis/bot/v2/hook/YOUR_FEISHU_BOT_WEBHOOK_HERE
         variables: []
       height: 169
       id: h1
@@ -1387,7 +1387,7 @@ workflow:
           max_write_timeout: 0
         title: 发送无关信息回复
         type: http-request
-        url: https://open.feishu.cn/open-apis/bot/v2/hook/fe9081a1-833b-4c6e-8966-0dd80f5d9b11
+        url: https://open.feishu.cn/open-apis/bot/v2/hook/YOUR_FEISHU_BOT_WEBHOOK_HERE
         variables: []
       height: 169
       id: h_chat
