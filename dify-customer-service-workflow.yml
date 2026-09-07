@@ -1,0 +1,1432 @@
+app:
+  description: 参考 678910.yml 设计的复杂版工作流：电商客服工单分级、LLM 意图/情感分析、两级问题分类、升级预警双通道通知。
+  icon: 🎧
+  icon_background: '#E8F3FF'
+  mode: workflow
+  name: 智能客服工单分级处理与升级工作流
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/ollama:1.0.0@ae50a2db261bffa7289677f2b0a60e60762ceb187b602113b72425ccbe772dc3
+    version: null
+kind: app
+version: 0.4.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        image_file_size_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: start
+        targetType: llm
+      id: e1
+      selected: false
+      source: s1
+      sourceHandle: source
+      target: l1
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: if-else
+      id: e1b
+      selected: false
+      source: l1
+      sourceHandle: source
+      target: g1
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: if-else
+        targetType: if-else
+      id: e2
+      selected: false
+      source: g1
+      sourceHandle: 'false'
+      target: i1
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: if-else
+        targetType: code
+      id: e2c
+      selected: false
+      source: g1
+      sourceHandle: 'true'
+      target: c_chat
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: http-request
+      id: e2d
+      selected: false
+      source: c_chat
+      sourceHandle: source
+      target: h_chat
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: http-request
+        targetType: end
+      id: e2e
+      selected: false
+      source: h_chat
+      sourceHandle: source
+      target: e_chat
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: if-else
+        targetType: code
+      id: e3
+      selected: false
+      source: i1
+      sourceHandle: 'true'
+      target: c0
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: if-else
+        targetType: question-classifier
+      id: e5
+      selected: false
+      source: i1
+      sourceHandle: 'false'
+      target: q1
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: http-request
+      id: e6
+      selected: false
+      source: c0
+      sourceHandle: source
+      target: h0
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: http-request
+        targetType: end
+      id: e7
+      selected: false
+      source: h0
+      sourceHandle: source
+      target: e2
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: question-classifier
+        targetType: code
+      id: e8
+      selected: false
+      source: q1
+      sourceHandle: '1'
+      target: c1
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: question-classifier
+        targetType: question-classifier
+      id: e9
+      selected: false
+      source: q1
+      sourceHandle: '2'
+      target: q2
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: question-classifier
+        targetType: question-classifier
+      id: e10
+      selected: false
+      source: q1
+      sourceHandle: '3'
+      target: q2
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: question-classifier
+        targetType: code
+      id: e11
+      selected: false
+      source: q1
+      sourceHandle: '4'
+      target: c4
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: variable-aggregator
+      id: e12
+      selected: false
+      source: c1
+      sourceHandle: source
+      target: a1
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: variable-aggregator
+      id: e13
+      selected: false
+      source: c4
+      sourceHandle: source
+      target: a1
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: question-classifier
+        targetType: code
+      id: e14
+      selected: false
+      source: q2
+      sourceHandle: '1'
+      target: c5
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: variable-aggregator
+      id: e14b
+      selected: false
+      source: c5
+      sourceHandle: source
+      target: a1
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: question-classifier
+        targetType: code
+      id: e15
+      selected: false
+      source: q2
+      sourceHandle: '2'
+      target: c6
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: variable-aggregator
+      id: e15b
+      selected: false
+      source: c6
+      sourceHandle: source
+      target: a1
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: question-classifier
+        targetType: code
+      id: e16
+      selected: false
+      source: q2
+      sourceHandle: '3'
+      target: c7
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: variable-aggregator
+      id: e16b
+      selected: false
+      source: c7
+      sourceHandle: source
+      target: a1
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: question-classifier
+        targetType: code
+      id: e17
+      selected: false
+      source: q2
+      sourceHandle: '4'
+      target: c8
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: variable-aggregator
+      id: e17b
+      selected: false
+      source: c8
+      sourceHandle: source
+      target: a1
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: question-classifier
+        targetType: code
+      id: e18
+      selected: false
+      source: q2
+      sourceHandle: '5'
+      target: c9
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: variable-aggregator
+      id: e18b
+      selected: false
+      source: c9
+      sourceHandle: source
+      target: a1
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: variable-aggregator
+        targetType: llm
+      id: e21
+      selected: false
+      source: a1
+      sourceHandle: source
+      target: l2
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: template-transform
+      id: e22
+      selected: false
+      source: l2
+      sourceHandle: source
+      target: t1
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: template-transform
+        targetType: code
+      id: e23
+      selected: false
+      source: t1
+      sourceHandle: source
+      target: c10
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: http-request
+      id: e24
+      selected: false
+      source: c10
+      sourceHandle: source
+      target: h1
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: http-request
+        targetType: end
+      id: e25
+      selected: false
+      source: h1
+      sourceHandle: source
+      target: e1
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        selected: false
+        title: 开始
+        type: start
+        variables:
+        - default: ''
+          hint: ''
+          label: 订单号
+          max_length: 64
+          options: []
+          placeholder: 如 SO123456
+          required: true
+          type: text-input
+          variable: order_id
+        - default: ''
+          hint: ''
+          label: 客户等级
+          max_length: 16
+          options: []
+          placeholder: 普通 / 会员 / VIP
+          required: true
+          type: text-input
+          variable: customer_level
+        - default: ''
+          hint: ''
+          label: 客户留言
+          max_length: 2000
+          options: []
+          placeholder: 客户咨询或投诉内容
+          required: true
+          type: text-input
+          variable: message
+      height: 139
+      id: s1
+      position:
+        x: 30
+        y: 476.5
+      positionAbsolute:
+        x: 30
+        y: 476.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: qwen2.5:7b
+          provider: langgenius/ollama/ollama
+        prompt_template:
+        - id: sys1
+          role: system
+          text: "电商客服留言智能分析助手 · 系统提示词（专业版）\n\n一、角色设定（Role）\n你是一家头部电商平台的高级客服体验分析师（Senior\
+            \ CX Insight Analyst）。\n你拥有十年以上的客服质检与用户体验研究经验，能够在一句话的客户留言中精准识别其真实意图、情绪水位与紧急程度，并输出可直接驱动工单路由与升级策略的结构化结论。\n\
+            你的分析是后续自动分流、SLA 分级与主管升级的唯一依据，因此必须稳定、可解析、零歧义。\n\n二、任务目标（Objective）\n阅读并解析一条客户留言（可能为售前咨询、售后诉求、投诉宣泄或无效信息），输出四项结构化结论：\n\
+            \  1. 意图大类\n  2. 情感极性\n  3. 紧急程度（1–5 级）\n  4. 一句话摘要\n输出须严格遵循「四、输出规范」，确保可被下游自动化系统逐行解析。\n\
+            \n三、分析框架（Framework）\n\n3.1 意图大类（Intent Category）——四选一，判定优先级从高到低：\n  •\
+            \ 投诉建议：表达对商品/服务/物流的不满，要求赔偿/道歉/改进，或带有明显负面情绪宣泄。\n  • 售后问题：已下单后的退换货、维修、物流追踪、发票、使用故障等履约类问题。\n\
+            \  • 售前咨询：下单前的商品参数、库存、优惠、活动、适配性等问题。\n  • 其他：与上述均不匹配的闲聊、广告、测试，或信息不足无法判定者。\n\
+            \  判定规则：\n    - 同一留言含「投诉 + 售后」时，优先归为「投诉建议」。\n    - 含「售前 + 售后」时，以客户最关心的诉求为准；无法区分时归「售后问题」。\n\
+            \n3.2 情感极性（Sentiment Polarity）——四选一，按强度递增：\n  • 正面：满意、赞扬、复购意愿、感谢。\n  •\
+            \ 中性：客观陈述事实，无明显情绪倾向。\n  • 负面：不满、失望、抱怨，但未达到失控。\n  • 愤怒：出现辱骂、威胁、公开曝光/投诉监管或媒体、要求高层介入，或情绪明显失控。\n\
+            \  说明：「愤怒」是独立的升级信号，不因意图分类而改变；一旦判定为愤怒，下游必须触发主管升级。\n\n3.3 紧急程度（Urgency，1–5）——依据「损失紧迫性\
+            \ + 客户势能 + 风险外溢」综合打分：\n  • 1 级：普通咨询，无时间压力。\n  • 2 级：一般售后，可在常规 SLA 内处理。\n\
+            \  • 3 级：明确不满或需协调，需当日响应。\n  • 4 级：高紧急——已威胁差评/退款维权、涉及金额较大，或生鲜/医药等时效敏感品类。\n\
+            \  • 5 级：最高紧急——人身安全、批量投诉、舆情/监管风险，或已升级至媒体/黑猫/12315。\n  规则：情感极性为「愤怒」时，紧急程度不得低于\
+            \ 4。\n\n3.4 一句话摘要（Summary）\n  ≤ 40 字，第三人称客观陈述：谁 + 遇到了什么问题 + 期望什么结果。\n\
+            \  禁止出现情绪化形容词，禁止复述完整原文。\n\n四、输出规范（Output Specification）\n严格按以下四行输出，每行一项，使用换行分隔；不要输出任何额外解释、序号、代码块符号或前后缀：\n\
+            \n意图大类：<售前咨询|售后问题|投诉建议|其他>\n情感极性：<正面|中性|负面|愤怒>\n紧急程度: <N>\n摘要：<一句话摘要>\n\
+            \n注意：第三行「紧急程度」后紧跟英文冒号「:」与一个半角空格，再写数字（例如：紧急程度: 5）。\n该格式为下游系统解析的硬性要求，不得改为全角冒号、不得省略空格、不得附加单位。\n\
+            \n五、约束与限制（Constraints）\n1. 只输出上述四行，禁止输出问候语、分析过程、理由说明。\n2. 禁止输出 Markdown\
+            \ 代码块（```）、井号、反引号等特殊符号。\n3. 分类必须取自规范给定的枚举值，不得自创。\n4. 摘要必须基于留言事实，不得臆测客户未提及的信息。\n\
+            5. 当信息不足以判定意图时：意图归「其他」，紧急程度取 1，摘要写「信息不足，无法判定意图」。\n\n六、边界情形（Edge Cases）\n\
+            • 中英文混排、口语化、含表情包：先还原核心语义再判定。\n• 多条诉求合并：以风险最高、紧急度最强的一项主导分类。\n• 同一句话既是投诉又是咨询：意图取「投诉建议」，紧急度按投诉侧评估。\n\
+            \n附：与自动化工作流的兼容性说明（供工程对接参考）\n• 升级触发条件：下游 if-else 节点对「情感极性」行做 contains(\"\
+            愤怒\")，对「紧急程度」行做\n  contains(\"紧急程度: 4\") 或 contains(\"紧急程度: 5\")，命中即路由至主管预警通道。\n\
+            • 本提示词输出格式与上述文本匹配，可直接嵌入 Dify 工作流的 LLM 分析节点（如 l1）。\n"
+        - id: usr1
+          role: user
+          text: '客户等级：{{#s1.customer_level#}}
+
+            订单号：{{#s1.order_id#}}
+
+            客户留言：{{#s1.message#}}'
+        selected: true
+        title: 意图与情感分析
+        type: llm
+        vision:
+          enabled: false
+      height: 87
+      id: l1
+      position:
+        x: 362
+        y: 476.5
+      positionAbsolute:
+        x: 362
+        y: 476.5
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: contains
+            id: cond0
+            value: 意图大类：其他
+            variable_selector:
+            - l1
+            - text
+          id: 'true'
+          logical_operator: or
+        selected: false
+        title: 相关性闸门
+        type: if-else
+      height: 123
+      id: g1
+      position:
+        x: 691.1428571428571
+        y: 476.5
+      positionAbsolute:
+        x: 691.1428571428571
+        y: 476.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: contains
+            id: cond1
+            value: 愤怒
+            variable_selector:
+            - l1
+            - text
+          - comparison_operator: contains
+            id: cond2
+            value: '紧急程度: 5'
+            variable_selector:
+            - l1
+            - text
+          - comparison_operator: contains
+            id: cond3
+            value: '紧急程度: 4'
+            variable_selector:
+            - l1
+            - text
+          id: 'true'
+          logical_operator: or
+        selected: false
+        title: 是否需升级
+        type: if-else
+      height: 175
+      id: i1
+      position:
+        x: 1449
+        y: 496.5
+      positionAbsolute:
+        x: 1449
+        y: 496.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "import json\ndef main(order_id, customer_level, message):\n    alert\
+          \ = \"⚠️ 升级预警：客户等级 {} 的订单 {} 触发高优先级（愤怒/高紧急），需主管介入。原始留言：{}\".format(customer_level,\
+          \ order_id, message)\n    data = {\"msg_type\": \"text\", \"content\": {\"\
+          text\": alert}}\n    return {\"result\": json.dumps(data, ensure_ascii=False)}\n"
+        code_language: python3
+        outputs:
+          result:
+            children: null
+            type: string
+        selected: false
+        title: 升级预警内容
+        type: code
+        variables:
+        - value_selector:
+          - s1
+          - order_id
+          value_type: string
+          variable: order_id
+        - value_selector:
+          - s1
+          - customer_level
+          value_type: string
+          variable: customer_level
+        - value_selector:
+          - s1
+          - message
+          value_type: string
+          variable: message
+      height: 51
+      id: c0
+      position:
+        x: 2113
+        y: 284.5
+      positionAbsolute:
+        x: 2113
+        y: 284.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data:
+          - id: key-value-1
+            key: ''
+            type: text
+            value: '{{#c0.result#}}'
+          type: raw-text
+        headers: 'Content-Type:application/json
+
+          Charset:UTF-8'
+        method: post
+        params: ''
+        retry_config:
+          max_retries: 3
+          retry_enabled: true
+          retry_interval: 100
+        selected: false
+        ssl_verify: true
+        timeout:
+          max_connect_timeout: 0
+          max_read_timeout: 0
+          max_write_timeout: 0
+        title: 主管飞书预警
+        type: http-request
+        url: https://open.feishu.cn/open-apis/bot/v2/hook/fe9081a1-833b-4c6e-8966-0dd80f5d9b11
+        variables: []
+      height: 169
+      id: h0
+      position:
+        x: 2445
+        y: 284.5
+      positionAbsolute:
+        x: 2445
+        y: 284.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        classes:
+        - id: '1'
+          name: 售前咨询
+        - id: '2'
+          name: 售后问题
+        - id: '3'
+          name: 投诉建议
+        - id: '4'
+          name: 其他
+        instructions: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: qwen2.5:7b
+          provider: langgenius/ollama/ollama
+        query_variable_selector:
+        - s1
+        - message
+        selected: false
+        title: 意图分类
+        type: question-classifier
+        vision:
+          enabled: false
+      height: 245
+      id: q1
+      position:
+        x: 2445
+        y: 477.5
+      positionAbsolute:
+        x: 2445
+        y: 477.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "import json\ndef main(order_id, customer_level, message):\n    content\
+          \ = \"【售前咨询】订单号 {}（客户等级 {}）的处理结论：{}\".format(order_id, customer_level, message)\n\
+          \    data = {\n        \"msg_type\": \"text\",\n        \"content\": {\"\
+          text\": content}\n    }\n    return {\"result\": json.dumps(data, ensure_ascii=False)}\n"
+        code_language: python3
+        outputs:
+          result:
+            children: null
+            type: string
+        selected: false
+        title: 售前咨询
+        type: code
+        variables:
+        - value_selector:
+          - s1
+          - order_id
+          value_type: string
+          variable: order_id
+        - value_selector:
+          - s1
+          - customer_level
+          value_type: string
+          variable: customer_level
+        - value_selector:
+          - s1
+          - message
+          value_type: string
+          variable: message
+      height: 51
+      id: c1
+      position:
+        x: 3109
+        y: 523.5
+      positionAbsolute:
+        x: 3109
+        y: 523.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "import json\ndef main(order_id, customer_level, message):\n    content\
+          \ = \"【其他】订单号 {}（客户等级 {}）的处理结论：{}\".format(order_id, customer_level, message)\n\
+          \    data = {\n        \"msg_type\": \"text\",\n        \"content\": {\"\
+          text\": content}\n    }\n    return {\"result\": json.dumps(data, ensure_ascii=False)}\n"
+        code_language: python3
+        outputs:
+          result:
+            children: null
+            type: string
+        selected: false
+        title: 其他
+        type: code
+        variables:
+        - value_selector:
+          - s1
+          - order_id
+          value_type: string
+          variable: order_id
+        - value_selector:
+          - s1
+          - customer_level
+          value_type: string
+          variable: customer_level
+        - value_selector:
+          - s1
+          - message
+          value_type: string
+          variable: message
+      height: 51
+      id: c4
+      position:
+        x: 3109
+        y: 1150
+      positionAbsolute:
+        x: 3109
+        y: 1150
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        classes:
+        - id: '1'
+          name: 物流配送
+        - id: '2'
+          name: 商品质量
+        - id: '3'
+          name: 退换货
+        - id: '4'
+          name: 价格促销
+        - id: '5'
+          name: 账户支付
+        instructions: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: qwen2.5:7b
+          provider: langgenius/ollama/ollama
+        query_variable_selector:
+        - s1
+        - message
+        selected: false
+        title: 问题细分
+        type: question-classifier
+        vision:
+          enabled: false
+      height: 283
+      id: q2
+      position:
+        x: 2777
+        y: 597.5
+      positionAbsolute:
+        x: 2777
+        y: 597.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "import json\ndef main(order_id, customer_level, message):\n    content\
+          \ = \"【物流配送】订单号 {}（客户等级 {}）的处理结论：{}\".format(order_id, customer_level, message)\n\
+          \    data = {\n        \"msg_type\": \"text\",\n        \"content\": {\"\
+          text\": content}\n    }\n    return {\"result\": json.dumps(data, ensure_ascii=False)}\n"
+        code_language: python3
+        outputs:
+          result:
+            children: null
+            type: string
+        selected: false
+        title: 问题-物流配送
+        type: code
+        variables:
+        - value_selector:
+          - s1
+          - order_id
+          value_type: string
+          variable: order_id
+        - value_selector:
+          - s1
+          - customer_level
+          value_type: string
+          variable: customer_level
+        - value_selector:
+          - s1
+          - message
+          value_type: string
+          variable: message
+      height: 51
+      id: c5
+      position:
+        x: 3109
+        y: 695
+      positionAbsolute:
+        x: 3109
+        y: 695
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "import json\ndef main(order_id, customer_level, message):\n    content\
+          \ = \"【商品质量】订单号 {}（客户等级 {}）的处理结论：{}\".format(order_id, customer_level, message)\n\
+          \    data = {\n        \"msg_type\": \"text\",\n        \"content\": {\"\
+          text\": content}\n    }\n    return {\"result\": json.dumps(data, ensure_ascii=False)}\n"
+        code_language: python3
+        outputs:
+          result:
+            children: null
+            type: string
+        selected: false
+        title: 问题-商品质量
+        type: code
+        variables:
+        - value_selector:
+          - s1
+          - order_id
+          value_type: string
+          variable: order_id
+        - value_selector:
+          - s1
+          - customer_level
+          value_type: string
+          variable: customer_level
+        - value_selector:
+          - s1
+          - message
+          value_type: string
+          variable: message
+      height: 51
+      id: c6
+      position:
+        x: 3109
+        y: 786
+      positionAbsolute:
+        x: 3109
+        y: 786
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "import json\ndef main(order_id, customer_level, message):\n    content\
+          \ = \"【退换货】订单号 {}（客户等级 {}）的处理结论：{}\".format(order_id, customer_level, message)\n\
+          \    data = {\n        \"msg_type\": \"text\",\n        \"content\": {\"\
+          text\": content}\n    }\n    return {\"result\": json.dumps(data, ensure_ascii=False)}\n"
+        code_language: python3
+        outputs:
+          result:
+            children: null
+            type: string
+        selected: false
+        title: 问题-退换货
+        type: code
+        variables:
+        - value_selector:
+          - s1
+          - order_id
+          value_type: string
+          variable: order_id
+        - value_selector:
+          - s1
+          - customer_level
+          value_type: string
+          variable: customer_level
+        - value_selector:
+          - s1
+          - message
+          value_type: string
+          variable: message
+      height: 51
+      id: c7
+      position:
+        x: 3109
+        y: 877
+      positionAbsolute:
+        x: 3109
+        y: 877
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "import json\ndef main(order_id, customer_level, message):\n    content\
+          \ = \"【价格促销】订单号 {}（客户等级 {}）的处理结论：{}\".format(order_id, customer_level, message)\n\
+          \    data = {\n        \"msg_type\": \"text\",\n        \"content\": {\"\
+          text\": content}\n    }\n    return {\"result\": json.dumps(data, ensure_ascii=False)}\n"
+        code_language: python3
+        outputs:
+          result:
+            children: null
+            type: string
+        selected: false
+        title: 问题-价格促销
+        type: code
+        variables:
+        - value_selector:
+          - s1
+          - order_id
+          value_type: string
+          variable: order_id
+        - value_selector:
+          - s1
+          - customer_level
+          value_type: string
+          variable: customer_level
+        - value_selector:
+          - s1
+          - message
+          value_type: string
+          variable: message
+      height: 51
+      id: c8
+      position:
+        x: 3109
+        y: 968
+      positionAbsolute:
+        x: 3109
+        y: 968
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "import json\ndef main(order_id, customer_level, message):\n    content\
+          \ = \"【账户支付】订单号 {}（客户等级 {}）的处理结论：{}\".format(order_id, customer_level, message)\n\
+          \    data = {\n        \"msg_type\": \"text\",\n        \"content\": {\"\
+          text\": content}\n    }\n    return {\"result\": json.dumps(data, ensure_ascii=False)}\n"
+        code_language: python3
+        outputs:
+          result:
+            children: null
+            type: string
+        selected: false
+        title: 问题-账户支付
+        type: code
+        variables:
+        - value_selector:
+          - s1
+          - order_id
+          value_type: string
+          variable: order_id
+        - value_selector:
+          - s1
+          - customer_level
+          value_type: string
+          variable: customer_level
+        - value_selector:
+          - s1
+          - message
+          value_type: string
+          variable: message
+      height: 51
+      id: c9
+      position:
+        x: 3109
+        y: 1059
+      positionAbsolute:
+        x: 3109
+        y: 1059
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        output_type: string
+        selected: false
+        title: 变量聚合器
+        type: variable-aggregator
+        variables:
+        - - c1
+          - result
+        - - c4
+          - result
+        - - c5
+          - result
+        - - c6
+          - result
+        - - c7
+          - result
+        - - c8
+          - result
+        - - c9
+          - result
+      height: 266
+      id: a1
+      position:
+        x: 3441
+        y: 877
+      positionAbsolute:
+        x: 3441
+        y: 877
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: qwen2.5:7b
+          provider: langgenius/ollama/ollama
+        prompt_template:
+        - id: sys1
+          role: system
+          text: "你是资深电商客服主管。请基于分流结果与原始信息，输出一份「处理方案 + 客户回复话术」。硬性要求：\n1) 只输出以下两段内容，严禁任何额外解释、总结或操作建议：\n\
+            \   ### 处理方案\n   （须含「责任部门」与「SLA 时限」两项）\n   ### 回复话术\n   （温和、专业、可直接发送给客户）\n\
+            2) 回复话术结尾只用一句「祝您生活愉快，客服团队敬上」，禁止使用「祝商祺 / 此致敬礼 / 顺颂商祺」等过于正式的商务落款。\n3) 禁止出现\
+            \ [公司名称]、[客服团队名称]、[日期]、[电话号码] 等占位符，统一用「客服团队」代替。\n4) 禁止以「---」「请注意」「这样可以确保」「希望此回复」开头写任何补充说明。\n\
+            5) 严格只输出上述两段，不要输出 Markdown 代码块符号。\n6) 若原始留言与电商业务（订单、商品、物流、售后、促销、账户支付等）无关，属于闲聊、天气、广告、测试或无效信息，则不输出「处理方案」段落，只输出一段简短的「回复话术」礼貌引导客户回到正题，例如：「您好，我是您的电商客服助手～如果您有订单、商品或售后相关问题，欢迎随时告诉我，我会尽力帮您！」不得为此类无关信息编造责任部门或\
+            \ SLA。"
+        - id: usr1
+          role: user
+          text: '客户等级：{{#s1.customer_level#}}
+
+            订单号：{{#s1.order_id#}}
+
+            原始留言：{{#s1.message#}}
+
+            自动分流结果：{{#a1.output#}}'
+        selected: false
+        title: 生成处理方案
+        type: llm
+        vision:
+          enabled: false
+      height: 87
+      id: l2
+      position:
+        x: 3773
+        y: 877
+      positionAbsolute:
+        x: 3773
+        y: 877
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        selected: false
+        template: '尊敬的客户，关于订单 {{ order_id }} 的处理进展如下：
+
+          {{ plan_text }}'
+        title: 生成客户回复
+        type: template-transform
+        variables:
+        - value_selector:
+          - s1
+          - order_id
+          variable: order_id
+        - value_selector:
+          - l2
+          - text
+          variable: plan_text
+      height: 51
+      id: t1
+      position:
+        x: 4105
+        y: 877
+      positionAbsolute:
+        x: 4105
+        y: 877
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "import json\ndef main(reply_text):\n    data = {\"msg_type\": \"text\"\
+          , \"content\": {\"text\": reply_text}}\n    return {\"result\": json.dumps(data,\
+          \ ensure_ascii=False)}\n"
+        code_language: python3
+        outputs:
+          result:
+            children: null
+            type: string
+        selected: false
+        title: 构造飞书消息体
+        type: code
+        variables:
+        - value_selector:
+          - t1
+          - output
+          value_type: string
+          variable: reply_text
+      height: 51
+      id: c10
+      position:
+        x: 4437
+        y: 877
+      positionAbsolute:
+        x: 4437
+        y: 877
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data:
+          - id: key-value-1
+            key: ''
+            type: text
+            value: '{{#c10.result#}}'
+          type: raw-text
+        headers: 'Content-Type:application/json
+
+
+          Charset:UTF-8'
+        method: post
+        params: ''
+        retry_config:
+          max_retries: 3
+          retry_enabled: true
+          retry_interval: 100
+        selected: false
+        ssl_verify: true
+        timeout:
+          max_connect_timeout: 0
+          max_read_timeout: 0
+          max_write_timeout: 0
+        title: 发送工单通知
+        type: http-request
+        url: https://open.feishu.cn/open-apis/bot/v2/hook/fe9081a1-833b-4c6e-8966-0dd80f5d9b11
+        variables: []
+      height: 169
+      id: h1
+      position:
+        x: 4769
+        y: 877
+      positionAbsolute:
+        x: 4769
+        y: 877
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        outputs:
+        - value_selector:
+          - t1
+          - output
+          value_type: string
+          variable: output
+        - value_selector:
+          - a1
+          - output
+          value_type: string
+          variable: ticket_summary
+        selected: false
+        title: 结束
+        type: end
+      height: 114
+      id: e1
+      position:
+        x: 5101
+        y: 877
+      positionAbsolute:
+        x: 5101
+        y: 877
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        outputs:
+        - value_selector:
+          - c0
+          - result
+          value_type: string
+          variable: alert
+        selected: false
+        title: 结束
+        type: end
+      height: 88
+      id: e2
+      position:
+        x: 2777
+        y: 284.5
+      positionAbsolute:
+        x: 2777
+        y: 284.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "import json\ndef main():\n    guide = (\"您好，我是您的电商客服助手～如果您有订单、商品、物流、售后、促销或账户支付等\"\
+          \n             \"相关问题，欢迎随时告诉我，我会尽力为您处理！\")\n    data = {\"msg_type\": \"\
+          text\", \"content\": {\"text\": guide}}\n    return {\"result\": json.dumps(data,\
+          \ ensure_ascii=False)}\n"
+        code_language: python3
+        outputs:
+          result:
+            children: null
+            type: string
+        selected: false
+        title: 无关信息引导回复
+        type: code
+        variables: []
+      height: 51
+      id: c_chat
+      position:
+        x: 1117
+        y: 284.5
+      positionAbsolute:
+        x: 1117
+        y: 284.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data:
+          - id: key-value-1
+            key: ''
+            type: text
+            value: '{{#c_chat.result#}}'
+          type: raw-text
+        headers: 'Content-Type:application/json
+
+          Charset:UTF-8'
+        method: post
+        params: ''
+        retry_config:
+          max_retries: 3
+          retry_enabled: true
+          retry_interval: 100
+        selected: false
+        ssl_verify: true
+        timeout:
+          max_connect_timeout: 0
+          max_read_timeout: 0
+          max_write_timeout: 0
+        title: 发送无关信息回复
+        type: http-request
+        url: https://open.feishu.cn/open-apis/bot/v2/hook/fe9081a1-833b-4c6e-8966-0dd80f5d9b11
+        variables: []
+      height: 169
+      id: h_chat
+      position:
+        x: 1449
+        y: 287.5
+      positionAbsolute:
+        x: 1449
+        y: 287.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        outputs:
+        - value_selector:
+          - c_chat
+          - result
+          value_type: string
+          variable: guide_reply
+        selected: false
+        title: 结束
+        type: end
+      height: 88
+      id: e_chat
+      position:
+        x: 1758.142857142857
+        y: 180.21428571428572
+      positionAbsolute:
+        x: 1758.142857142857
+        y: 180.21428571428572
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    viewport:
+      x: -2874.3999999999983
+      y: -263.80000000000007
+      zoom: 0.7000000000000002
+  rag_pipeline_variables: []
